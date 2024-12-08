@@ -77,10 +77,10 @@
         <table id="links-table">
             <thead>
                 <tr>
+                    <th>Title</th>
+                    <th>Summary</th>
                     <th>Timestamp</th>
                     <th>Link</th>
-                    <th>Summary</th>
-                    <th>Title</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -130,10 +130,10 @@
             data.forEach((row) => {
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
+                    <td>${row.Title}</td>
+                    <td>${row.Summary}</td>
                     <td>${row.Timestamp}</td>
                     <td><a href="${row.Link}"  target="_blank">바로가기</a></td>
-                    <td>${row.Summary}</td>
-                    <td>${row.Title}</td>
                 `;
                 tbody.appendChild(tr);
             });
