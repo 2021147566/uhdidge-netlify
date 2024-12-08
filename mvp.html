@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Un.didge</title>
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600" rel="stylesheet">
+    <link rel="stylesheet" href="dist/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <main>
+        <h2>링크 요약 및 제목 생성</h2>
+        <p>아래에 링크(URL)를 입력하세요:</p>
+        <input id="url-input" type="text" placeholder="예: https://example.com" size="50"><br>
+        <button onclick="processLink()">처리하기</button>
+        <div id="result" style="margin-top: 20px;"></div>
+    </main>
+
+    <script>
+        const API_ENDPOINT = "https://uhdidge-render.onrender.com/process"; // Flask 서버 엔드포인트
+
+        // URL에서 userid 추출
+        function getUserIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userid = urlParams.get("userid") || "default_user";
+            console.log("Extracted userid:", userid); // 디버깅: 추출된 userid
+            return userid;
+        }
+
+        // 링크 처리 함수
+        async function processLink() {
+            const url = document.getElementById("url-input").value.trim();
+            const resultDiv = document.getElementById("result");
+            const userid = getUserIdFromURL();
+
+            if (!url) {
+                alert("URL을 입력해주세요.");
+                return;
+            }
+
+            resultDiv.innerHTML = "처리 중...";
+
+            try {
+                // Flask 서버로 데이터 전달
+                const response = await axios.post(API_ENDPOINT, {
+                    url: url,
+                    userid: userid,
+                });
+
+                const data = response.data;
+
+                // 결과 표시
+                resultDiv.innerHTML = `
+                    <h3>결과</h3>
+                    <p><strong>요약:</strong> ${data.summary}</p>
+                    <p><strong>제목:</strong> ${data.title}</p>
+                `;
+                console.log("백엔드 응답:", data);
+            } catch (error) {
+                console.error("Error processing link:", error);
+                resultDiv.innerHTML = "<p>처리 중 오류가 발생했습니다. 다시 시도해주세요.</p>";
+            }
+        }
+    </script>
+</body>
+</html>

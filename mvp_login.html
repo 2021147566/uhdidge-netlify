@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Login</title>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	</head>
+	<body>
+		<h1>Login</h1>
+		<form id="login-form">
+			<label for="user-id">User ID:</label>
+			<input
+				type="text"
+				id="user-id"
+				placeholder="Enter your User ID"
+				required
+			/>
+			<button type="submit">Login</button>
+		</form>
+		<p id="error-message" style="color: red; display: none">
+			Invalid User ID. Please try again.
+		</p>
+	</body>
+	<script>
+		document
+			.getElementById("login-form")
+			.addEventListener("submit", async (e) => {
+				e.preventDefault();
+
+				const userId = document.getElementById("user-id").value.trim();
+				const errorMessage = document.getElementById("error-message");
+				const scriptURL =
+					"https://script.google.com/macros/s/AKfycbwGYdHj7VaL2jSCoXvbokLTlLLazgHwyuUHKxI7YaE-8xVgeK-PeuB21HQXFMwqUcnb/exec"; // Google Apps Script URL
+
+				if (!userId) {
+					errorMessage.style.display = "block";
+					errorMessage.textContent = "Please enter a User ID.";
+					return;
+				}
+
+				try {
+					const response = await axios.get(scriptURL, {
+						params: {
+							action: "validateUser",
+							table: "users", // DB 시트 이름
+							userId: userId,
+						},
+					});
+
+					const result = response.data.result;
+					if (result.valid) {
+						// 로그인 성공
+						console.log("Login successful for userId:", userId);
+						// 사용자 ID를 sessionStorage에 저장
+						sessionStorage.setItem("userId", userId);
+
+						// URL에 사용자 ID 포함하여 리디렉션
+						window.location.href = `mvp.html?userid=${userId}`;
+					} else {
+						// 로그인 실패
+						errorMessage.style.display = "block";
+						errorMessage.textContent =
+							"Invalid User ID. Please try again.";
+					}
+				} catch (error) {
+					console.error("Error during login:", error);
+					errorMessage.style.display = "block";
+					errorMessage.textContent =
+						"An error occurred. Please try again later.";
+				}
+			});
+	</script>
+</html>
