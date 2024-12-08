@@ -15,6 +15,93 @@ body {
     margin: 0
     
 }
+/* Pricing Section Login Styles */
+.pricing.section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 2rem;
+    background: #f9f9f9;
+}
+
+.form-container {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.login-title {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.login-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    text-align: left;
+    font-size: 1rem;
+    color: #34495e;
+}
+
+.login-input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.login-button {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: #ffffff;
+    background: #3498db;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.login-section{
+    height: 81vh;
+    z-index: 9000000;
+}
+.login-button:hover {
+    background: #2980b9;
+}
+#login-section{
+    min-height: 60vh;
+    padding: 2rem;
+    background: #2c3e50;
+}
+.error-message {
+    color: #e74c3c;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+    display: none;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 1.5rem;
+    }
+
+    .login-title {
+        font-size: 1.5rem;
+    }
+}
+
 /* 헤더 전체 */
 .site-header {
     padding: 10px 20px; /* 상하 좌우 여백 */

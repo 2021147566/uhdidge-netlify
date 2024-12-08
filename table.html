@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Links</title>
+    <link rel="stylesheet" href="dist/css/style.css">
+    <style>
+/* 테이블 컨테이너 여유 공간 */
+        /* 메인 영역 중앙 정렬 */
+        main {
+            max-width: 1200px; /* 최대 너비 설정 */
+            margin: 50px auto; /* 상하 마진 50px, 좌우 중앙 정렬 */
+            padding: 20px;
+            text-align: left; /* 좌측 정렬 */
+        }
+
+        /* 테이블 컨테이너 */
+        #links-table {
+            width: 100%; /* 테이블 전체 너비 */
+            border-collapse: collapse; /* 셀 간 경계선 제거 */
+            font-size: 14px; /* 폰트 크기 조정 */
+            line-height: 1.6; /* 줄 간격 조정 */
+        }
+
+        /* 테이블 헤더 스타일 */
+        #links-table th {
+            background-color: #f4f4f4; /* 연한 회색 배경 */
+            text-align: left; /* 좌측 정렬 */
+            padding: 10px; /* 패딩 추가 */
+            border-bottom: 2px solid #ddd; /* 헤더 하단 경계선 */
+            font-weight: bold;
+        }
+
+        /* 테이블 데이터 셀 스타일 */
+        #links-table td {
+            padding: 10px; /* 패딩 추가 */
+            border-bottom: 1px solid #ddd; /* 하단 경계선 */
+        }
+
+        /* 행 hover 효과 */
+        #links-table tr:hover {
+            background-color: #f9f9f9; /* 연한 배경 색 */
+        }
+
+        /* 링크 스타일 */
+        #links-table a {
+            color: #0073e6; /* 링크 색상 (파란색) */
+            text-decoration: none; /* 밑줄 제거 */
+        }
+
+        #links-table a:hover {
+            text-decoration: underline; /* 마우스 오버 시 밑줄 표시 */
+        }
+
+        /* 돌아가기 버튼 스타일 */
+        button {
+            background-color: #0073e6; /* 파란색 배경 */
+            color: white; /* 흰색 글자 */
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 20px; /* 버튼과 테이블 간 거리 */
+            border-radius: 5px; /* 둥근 모서리 */
+        }
+
+        button:hover {
+            background-color: #005bb5; /* 어두운 파란색 배경 */
+        }
+
+    </style>
+</head>
+<body>
+    <main>
+        <h2>My links</h2>
+        <table id="links-table">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Link</th>
+                    <th>Summary</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button onclick="goBack()">돌아가기</button>
+    </main>
+
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyaUTIY2VBVcPiIrnRjySQbwZXe7QWdDpGVBuozc1SgKh8GS9AfAT9866LxV3yJkaAU5Q/exec"; // Apps Script URL
+
+        // URL에서 userid 추출
+        function getUserIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get("userid");
+        }
+
+        // Google Apps Script에서 데이터 가져오기
+        async function fetchUserLinks() {
+            const userid = getUserIdFromURL();
+            if (!userid) {
+                alert("사용자 ID를 찾을 수 없습니다. 다시 로그인해주세요.");
+                window.location.href = "mvp_login.html";
+                return;
+            }
+
+            try {
+                const response = await fetch(`${scriptURL}?action=getUserSheetData&userid=${userid}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    renderTable(data.data);
+                } else {
+                    alert("데이터를 가져오는 중 오류가 발생했습니다1.");
+                    console.error(data.error);
+                }
+            } catch (error) {
+                console.error("Error fetching user links:", error);
+                alert("데이터를 가져오는 중 오류가 발생했습니다2.");
+            }
+        }
+
+        // 테이블에 데이터 렌더링
+        function renderTable(data) {
+            const tbody = document.querySelector("#links-table tbody");
+            tbody.innerHTML = ""; // 기존 데이터 초기화
+
+            data.forEach((row) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${row.Timestamp}</td>
+                    <td><a href="${row.Link}"  target="_blank">바로가기</a></td>
+                    <td>${row.Summary}</td>
+                    <td>${row.Title}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 돌아가기 버튼 클릭
+        function goBack() {
+            const userid = getUserIdFromURL();
+            if (userid) {
+                window.location.href = `mvp.html?userid=${userid}`;
+            } else {
+                window.location.href = "mvp.html";
+            }
+        }
+
+        // 페이지 로드 시 데이터 가져오기
+        document.addEventListener("DOMContentLoaded", fetchUserLinks);
+    </script>
+</body>
+</html>

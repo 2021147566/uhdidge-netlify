@@ -14,7 +14,10 @@
         <h2>링크 요약 및 제목 생성</h2>
         <p>아래에 링크(URL)를 입력하세요:</p>
         <input id="url-input" type="text" placeholder="예: https://example.com" size="50"><br>
-        <button onclick="processLink()">처리하기</button>
+        <div class="button-group">
+            <button onclick="processLink()">요약하기</button>
+            <button onclick="viewSavedLinks()">내 링크들 보기</button>
+        </div>
         <div id="result" style="margin-top: 20px;"></div>
     </main>
 
@@ -28,7 +31,15 @@
             console.log("Extracted userid:", userid); // 디버깅: 추출된 userid
             return userid;
         }
-
+        function viewSavedLinks() {
+            const userid = getUserIdFromURL(); // URL에서 userid 가져오기
+            if (userid) {
+                window.location.href = `table.html?userid=${userid}`; // table.html로 이동
+            } else {
+                alert("사용자 ID를 찾을 수 없습니다. 다시 로그인해주세요.");
+                window.location.href = "mvp_login.html"; // 로그인 페이지로 리디렉션
+            }
+        }
         // 링크 처리 함수
         async function processLink() {
             const url = document.getElementById("url-input").value.trim();
@@ -54,8 +65,9 @@
                 // 결과 표시
                 resultDiv.innerHTML = `
                     <h3>결과</h3>
-                    <p><strong>요약:</strong> ${data.summary}</p>
                     <p><strong>제목:</strong> ${data.title}</p>
+                    <p><strong>요약:</strong> ${data.summary}</p>
+                    <button onclick="window.open('${url}', '_blank')" style="margin-top: 10px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">바로가기</button>
                 `;
                 console.log("백엔드 응답:", data);
             } catch (error) {
@@ -65,4 +77,46 @@
         }
     </script>
 </body>
+<style>
+    main {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 수평으로 가운데 정렬 */
+    justify-content: center; /* 수직으로 가운데 정렬 */
+    text-align: left; /* 텍스트는 좌측 정렬 */
+    height: 100vh; /* 화면 높이만큼 차지 */
+    margin: 0 auto; /* 수평 가운데 정렬 */
+    padding: 20px; /* 적절한 여백 추가 */
+    max-width: 600px; /* 메인 콘텐츠의 최대 너비 설정 */
+    box-sizing: border-box;
+}
+.button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    .ai {
+    padding: 5px 10px;
+    
+
+    }
+    .ai:hover {
+    background-color: #1b3958;
+    color: white;
+    cursor: pointer;
+}
+
+
+</style>
 </html>

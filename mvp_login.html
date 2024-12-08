@@ -1,26 +1,43 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Login</title>
-		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-	</head>
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600" rel="stylesheet">
+    <link rel="stylesheet" href="dist/css/style copy.css">
+    <script src="dist/js/main.min.js"></script>   
+	<script src="https://unpkg.com/animejs@3.0.1/lib/anime.min.js"></script>
+    <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
+
+</head>
+
+
 	<body>
-		<h1>Login</h1>
-		<form id="login-form">
-			<label for="user-id">User ID:</label>
-			<input
-				type="text"
-				id="user-id"
-				placeholder="Enter your User ID"
-				required
-			/>
-			<button type="submit">Login</button>
-		</form>
-		<p id="error-message" style="color: red; display: none">
-			Invalid User ID. Please try again.
-		</p>
+
+		<main>
+            <section class="login-section" id="login-section">
+				<h1>Login</h1>
+				<form id="login-form">
+					<label for="user-id">User ID</label>
+					<input
+						type="text"
+						id="user-id"
+						placeholder="User ID"
+						required
+					/>
+					<button type="submit">Login</button>
+				</form>
+				<p id="error-message" style="color: red; display: none">
+					Invalid User ID. Please try again.
+				</p>
+	
+            </section>
+
+
+        </main>
+
 	</body>
 	<script>
 		document
