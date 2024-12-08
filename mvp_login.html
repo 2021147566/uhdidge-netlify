@@ -32,6 +32,9 @@
 				<p id="error-message" style="color: red; display: none">
 					Invalid User ID. Please try again.
 				</p>
+				<button id="forgot-id-btn" style="font-size: 12px; margin-top: 10px; background: none; border: none; color: #ccc; cursor: pointer; text-decoration: underline;">
+					ID가 기억나지 않아요!
+				</button>
 	
             </section>
 
@@ -88,5 +91,40 @@
 						"An error occurred. Please try again later.";
 				}
 			});
+			    // "ID가 기억나지 않아요!" 버튼 클릭 이벤트 처리
+		document.getElementById("forgot-id-btn").addEventListener("click", async () => {
+			const timestamp = new Date().toLocaleString();
+			const ipFetchURL = "https://jsonip.com/";
+			let userIP = "IP 가져오는 중...";
+
+			// IP 주소 가져오기
+			try {
+				const response = await axios.get(ipFetchURL);
+				userIP = response.data.ip;
+			} catch (error) {
+				console.error("Error fetching IP address:", error);
+			}
+
+			// 클립보드에 복사할 내용 생성
+			const message = `
+				안녕하세요,
+
+				ID를 찾을 수 없습니다. 아래는 요청자의 정보입니다.
+
+				요청 시간: ${timestamp}
+				요청 IP 주소: ${userIP}
+
+				eaudechance@yonsei.ac.kr로 이 정보를 보내주세요.
+			`;
+
+			// 클립보드에 복사
+			try {
+				await navigator.clipboard.writeText(message);
+				alert("메일주소와 문의내용이 클립보드에 복사되었습니다. eaudechance@yonsei.ac.kr로 보내주세요.");
+			} catch (error) {
+				console.error("클립보드 복사 실패:", error);
+				alert("복사에 실패했습니다. 아래 정보를 수동으로 복사해 주세요:\n" + message);
+			}
+		});
 	</script>
 </html>
